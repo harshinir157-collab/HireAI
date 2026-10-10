@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 const API_URL = "https://hireai-backend-f3oy.onrender.com/api";
-const AI_URL = "http://127.0.0.1:8001/api";
+const AI_URL = "https://hireai-ai-service-0pw8.onrender.com/api";
 
 function App() {
 const [activeTab, setActiveTab] = useState("dashboard");
