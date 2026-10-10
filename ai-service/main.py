@@ -63,39 +63,55 @@ import re
 import requests
 
 
+
 def normalize_skill(skill: str) -> str:
     aliases = {
+        "js": "javascript",
+        "javascript": "javascript",
+        "ml": "machine learning",
+        "machine learning": "machine learning",
+        "dl": "deep learning",
+        "deep learning": "deep learning",
         "nlp": "natural language processing",
         "natural language processing": "natural language processing",
         "llm": "large language models",
+        "llms": "large language models",
+        "large language model": "large language models",
         "large language models": "large language models",
-        "scikit-learn": "scikit-learn",
         "sklearn": "scikit-learn",
+        "scikit learn": "scikit-learn",
+        "scikit-learn": "scikit-learn",
+        "react.js": "react",
+        "reactjs": "react",
+        "springboot": "spring boot",
+        "spring boot": "spring boot",
     }
 
-    cleaned = skill.strip().lower()
+    cleaned = " ".join(skill.strip().lower().split())
     return aliases.get(cleaned, cleaned)
 
 
 def calculate_match(candidate_skills: list[str], required_skills: str):
-    required = [
-        skill.strip()
+    required = list(dict.fromkeys(
+        normalize_skill(skill)
         for skill in required_skills.split(",")
         if skill.strip()
-    ]
+    ))
 
     candidate_normalized = {
-        normalize_skill(skill) for skill in candidate_skills
+        normalize_skill(skill)
+        for skill in candidate_skills
+        if skill.strip()
     }
 
     matched = [
         skill for skill in required
-        if normalize_skill(skill) in candidate_normalized
+        if skill in candidate_normalized
     ]
 
     missing = [
         skill for skill in required
-        if normalize_skill(skill) not in candidate_normalized
+        if skill not in candidate_normalized
     ]
 
     score = round(len(matched) / len(required) * 100) if required else 0
@@ -106,6 +122,7 @@ def calculate_match(candidate_skills: list[str], required_skills: str):
         "missingSkills": missing,
         "totalRequiredSkills": len(required),
     }
+
 
 
 @app.get("/api/jobs/match")
