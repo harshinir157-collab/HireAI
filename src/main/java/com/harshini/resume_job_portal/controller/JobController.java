@@ -9,7 +9,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/jobs")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "https://hireai-frontend-khbb.onrender.com"
+})
 public class JobController {
 
     private final JobRepository jobRepository;
