@@ -131,10 +131,15 @@ def calculate_match(candidate_skills: list[str], required_skills: str):
 @app.get("/api/jobs/match")
 def match_jobs(skills: str):
     try:
-        response = requests.get(
-            "http://localhost:8080/api/jobs",
-            timeout=5
-        )
+        
+            response = requests.get(
+    "https://hireai-backend-f3oy.onrender.com/api/jobs",
+    timeout=30
+)
+
+
+            
+        
         response.raise_for_status()
         jobs = response.json()
 
